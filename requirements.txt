@@ -1,0 +1,7 @@
+streamlit>=1.33
+openai>=1.25
+gspread>=5.11
+google-auth>=2.29
+pandas>=2.2
+openpyxl>=3.1
+sendgrid>=6.11     # only if you wire up e‑mail
