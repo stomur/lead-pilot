@@ -1,10 +1,9 @@
 
 # SoKat Lead Pilot
 
-A Streamlit app that captures, qualifies, and stores inbound leads for SoKat AI into a Google Sheet and Excel.
+A lightweight Streamlit app that captures, qualifies, and stores inbound leads to Google Sheets and Excel.
 
-## Setup Instructions
-
-1. Add your OpenAI API key and GCP service account JSON to Streamlit Cloud or secrets.toml
-2. Run the app: `streamlit run app.py`
-3. Fill out the form and check your connected Google Sheet
+## To deploy:
+1. Upload to GitHub
+2. Add your OpenAI key and GCP service account to Streamlit Secrets
+3. Run: `streamlit run app.py`
