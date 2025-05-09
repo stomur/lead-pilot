@@ -2,15 +2,17 @@ import os, datetime, json, streamlit as st, openai, gspread, pandas as pd
 from google.oauth2.service_account import Credentials
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-creds = Credentials.from_service_account_info(
-    json.loads(st.secrets["GCP_SERVICE_ACCOUNT"])
-)
+import gspread
+creds_dict = json.loads(st.secrets["GCP_SERVICE_ACCOUNT"])
+gc = gspread.service_account_from_dict(creds_dict)
+
 SHEET = "SoKat Leads"
 WORKSHEET = "Sheet1"
 
 @st.cache_resource(show_spinner=False)
 def get_ws():
     gc = gspread.authorize(creds)
+    def get_ws():
     sh = gc.open(SHEET)
     return sh.worksheet(WORKSHEET)
 
