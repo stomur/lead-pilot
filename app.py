@@ -1,4 +1,3 @@
-
 import os, datetime, json, streamlit as st, openai, gspread, pandas as pd
 from google.oauth2.service_account import Credentials
 
@@ -32,19 +31,28 @@ if submitted:
     prompt = (f"You are SoKat's BD assistant. Rate 0-10 how well this prospect "
               f"matches the services SoKat offers, and summarise in 1 sentence.\n\n"
               f"Prospect: {company}, role {role}\nInterest: {interest}\nPain: {pain_pt}")
-    res = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=60
-    )
-    score = res.choices[0].message.content
+    
+    try:
+        res = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=60
+        )
+        score = res.choices[0].message.content
+    except Exception as e:
+        st.error(f"❌ OpenAI API error while scoring lead: {e}")
+        st.stop()
+
     st.success("Thanks! A SoKat team-member will reach out shortly.")
 
-    ws = get_ws()
-    ws.append_row([
-        datetime.datetime.utcnow().isoformat(),
-        name, email, company, role, ", ".join(interest), pain_pt, score
-    ])
+    try:
+        ws = get_ws()
+        ws.append_row([
+            datetime.datetime.utcnow().isoformat(),
+            name, email, company, role, ", ".join(interest), pain_pt, score
+        ])
+    except Exception as e:
+        st.error(f"❌ Google Sheet write error: {e}")
 
     row = dict(timestamp=datetime.datetime.utcnow(), name=name, email=email,
                company=company, role=role, interest=interest, pain=pain_pt, score=score)
@@ -59,9 +67,13 @@ if submitted:
     with st.expander("Generate personalised follow-up"):
         reply_prompt = (f"Draft a concise, helpful first-touch email from SoKat to "
                         f"{name} based on their notes: {pain_pt}. Tone: expert yet friendly.")
-        reply_txt = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": reply_prompt}],
-            max_tokens=180
-        ).choices[0].message.content
-        st.code(reply_txt, language="markdown")
+        try:
+            reply_txt = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": reply_prompt}],
+                max_tokens=180
+            ).choices[0].message.content
+            st.code(reply_txt, language="markdown")
+        except Exception as e:
+            st.error(f"❌ OpenAI API error while generating email: {e}")
+
