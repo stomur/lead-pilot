@@ -33,7 +33,7 @@ if submitted:
               f"matches the services SoKat offers, and summarise in 1 sentence.\n\n"
               f"Prospect: {company}, role {role}\nInterest: {interest}\nPain: {pain_pt}")
     res = openai.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=60
     )
