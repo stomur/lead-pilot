@@ -1,6 +1,2 @@
-
-streamlit>=1.33
-openai>=1.25
-gspread>=5.11
-pandas>=2.2
-openpyxl>=3.1
+streamlit
+gspread
