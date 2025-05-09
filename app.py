@@ -51,9 +51,11 @@ if submitted:
             datetime.datetime.utcnow().isoformat(),
             name, email, company, role, ", ".join(interest), pain_pt, score
         ])
-        st.success("✅ Lead successfully written to Google Sheet.")
     except Exception as e:
-        st.error(f"❌ Google Sheet write error: {e}")
+        st.error("❌ Failed to write to Google Sheet.")
+        st.exception(e)
+    else:
+        st.success("✅ Lead successfully written to Google Sheet.")
 
     row = dict(timestamp=datetime.datetime.utcnow(), name=name, email=email,
                company=company, role=role, interest=interest, pain=pain_pt, score=score)
