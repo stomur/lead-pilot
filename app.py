@@ -60,7 +60,7 @@ if submitted:
         reply_prompt = (f"Draft a concise, helpful first-touch email from SoKat to "
                         f"{name} based on their notes: {pain_pt}. Tone: expert yet friendly.")
         reply_txt = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": reply_prompt}],
             max_tokens=180
         ).choices[0].message.content
